@@ -1,0 +1,1 @@
+Noveny{id=ad15, ar=1500, nev=Rózsa, kor=5}Noveny{id=bb10, ar=500, nev=Málna, kor=6}

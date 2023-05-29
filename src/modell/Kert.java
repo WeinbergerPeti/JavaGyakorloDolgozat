@@ -45,6 +45,39 @@ public class Kert
         }
     }
     
+    public int getNovenyId(String id)
+    {
+        int i=0;
+        boolean nincsMeg=true;
+        int kor=0;
+        while(i<kertem.size() && nincsMeg)
+        {
+            if(kertem.get(i).getId().equals(id))
+            {
+                nincsMeg=false;
+                kor=kertem.get(i).getKor();
+            }
+            i++;
+        }
+        return kor;
+    }
+    public int getNovenyNev(String nev)
+    {
+        int i=0;
+        boolean nincsMeg=true;
+        int kor=0;
+        while(i<kertem.size() && nincsMeg)
+        {
+            if(kertem.get(i).getNev().equals(nev))
+            {
+                nincsMeg=false;
+                kor=kertem.get(i).getKor();
+            }
+            i++;
+        }
+        return kor;
+    }
+    
     public void szerializalas()
     {
         FileOutputStream kiFajl;

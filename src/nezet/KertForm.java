@@ -4,6 +4,23 @@
  */
 package nezet;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListModel;
+import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
+import javax.swing.JMenuItem;
+import modell.Kert;
+import modell.Noveny;
+
 /**
  *
  * @author Weinberger
@@ -13,10 +30,28 @@ public class KertForm extends javax.swing.JFrame {
     /**
      * Creates new form KertForm
      */
+    
+    private Kert kertem;
+    
     public KertForm() {
         initComponents();
+        kertem = new Kert();
+        
+        kertem.deszerializalas();
+        
+        DefaultComboBoxModel alapId = new DefaultComboBoxModel();
+        DefaultComboBoxModel alapNev = new DefaultComboBoxModel();
+        
+        for (Noveny noveny: kertem.getKertem()) 
+        {
+            alapId.addElement(noveny.getId());
+            alapNev.addElement(noveny.getNev());
+        }
+        
+        nevComboBox.setModel(alapNev);
+        idComboBox.setModel(alapId);
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -26,21 +61,121 @@ public class KertForm extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        idComboBox = new javax.swing.JComboBox<>();
+        nevComboBox = new javax.swing.JComboBox<>();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        korLbl = new javax.swing.JLabel();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        mentesMI = new javax.swing.JMenuItem();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        idComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                idComboBoxActionPerformed(evt);
+            }
+        });
+
+        nevComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nevComboBoxActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setText("Növény id");
+
+        jLabel2.setText("Növény név:");
+
+        korLbl.setText("Kor: ");
+
+        jMenu1.setText("Fájl");
+
+        mentesMI.setText("Mentés");
+        mentesMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mentesMIActionPerformed(evt);
+            }
+        });
+        jMenu1.add(mentesMI);
+
+        jMenuBar1.add(jMenu1);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(49, 49, 49)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(idComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1))
+                        .addGap(99, 99, 99)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(nevComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(149, 149, 149)
+                        .addComponent(korLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(108, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(12, 12, 12)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(idComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(nevComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(korLbl)
+                .addContainerGap(187, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void nevComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nevComboBoxActionPerformed
+        
+        JComboBox nevCB = (JComboBox)evt.getSource();
+        nevCB.getSelectedItem();
+        korLbl.setText(String.format("Kor: %d", kertem.getNovenyNev((String) nevCB.getSelectedItem())));
+    }//GEN-LAST:event_nevComboBoxActionPerformed
+
+    private void idComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idComboBoxActionPerformed
+        JComboBox idCB = (JComboBox)evt.getSource();
+        idCB.getSelectedItem();
+        korLbl.setText(String.format("Kor: %d", kertem.getNovenyId((String) idCB.getSelectedItem())));
+    }//GEN-LAST:event_idComboBoxActionPerformed
+
+    private void mentesMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mentesMIActionPerformed
+        JFileChooser mentes = new JFileChooser();
+        int eredmeny = mentes.showSaveDialog(this);
+        
+        if (eredmeny == JFileChooser.APPROVE_OPTION ) 
+        {
+            try {
+                Files.createFile(mentes.getSelectedFile().toPath());
+                BufferedWriter fajlbaIr = Files.newBufferedWriter(mentes.getSelectedFile().toPath());
+                for (Noveny noveny : kertem.getKertem())
+                {
+                    fajlbaIr.write(noveny.toString());
+                }
+                fajlbaIr.close();
+            } catch (IOException ex) {
+                Logger.getLogger(KertForm.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+    }//GEN-LAST:event_mentesMIActionPerformed
 
     /**
      * @param args the command line arguments
@@ -78,5 +213,13 @@ public class KertForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> idComboBox;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JLabel korLbl;
+    private javax.swing.JMenuItem mentesMI;
+    private javax.swing.JComboBox<String> nevComboBox;
     // End of variables declaration//GEN-END:variables
 }
