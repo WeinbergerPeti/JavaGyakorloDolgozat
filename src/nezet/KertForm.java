@@ -4,6 +4,8 @@
  */
 package nezet;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
@@ -15,9 +17,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import modell.Kert;
 import modell.Noveny;
 
@@ -50,6 +55,27 @@ public class KertForm extends javax.swing.JFrame {
         
         nevComboBox.setModel(alapNev);
         idComboBox.setModel(alapId);
+        
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                kilepes();
+            }
+        });
+    }
+    
+    private void kilepes() 
+    {
+        ImageIcon ikon = new ImageIcon("src/kep/kep.png");
+        int valasz = JOptionPane.showOptionDialog(rootPane, "Biztosan ki szeretnél lépni?", "Kilépés", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, ikon, null, null);
+        if(valasz == JOptionPane.YES_OPTION)
+        {
+            System.exit(0);
+        }
+        else 
+        {
+            setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        }
     }
     
     /**
@@ -69,6 +95,7 @@ public class KertForm extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         mentesMI = new javax.swing.JMenuItem();
+        kilepesMI = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -99,6 +126,14 @@ public class KertForm extends javax.swing.JFrame {
             }
         });
         jMenu1.add(mentesMI);
+
+        kilepesMI.setText("Kilépés");
+        kilepesMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                kilepesMIActionPerformed(evt);
+            }
+        });
+        jMenu1.add(kilepesMI);
 
         jMenuBar1.add(jMenu1);
 
@@ -177,6 +212,13 @@ public class KertForm extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_mentesMIActionPerformed
 
+    private void kilepesMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kilepesMIActionPerformed
+//        ImageIcon ikon = new ImageIcon("src/kep/kep.png");
+//        int valasz = JOptionPane.showOptionDialog(rootPane, "Biztosan ki szeretnél lépni?", "Kilépés", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, ikon, null, null);
+//        if(valasz == JOptionPane.YES_OPTION) System.exit(0);
+        kilepes();
+    }//GEN-LAST:event_kilepesMIActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -218,6 +260,7 @@ public class KertForm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem kilepesMI;
     private javax.swing.JLabel korLbl;
     private javax.swing.JMenuItem mentesMI;
     private javax.swing.JComboBox<String> nevComboBox;
